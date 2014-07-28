@@ -1,0 +1,13 @@
+<ivysettings>
+  <settings defaultResolver="ventra-chain" />
+
+  <include file="${user.home}/.ivy2/ivysettings.xml" />
+
+  <resolvers>
+    <chain name="ventra-chain">
+      <ibiblio name="ru.ventra.ebr.release" m2compatible="true" root="https://ebr.ventra.ru/release/" />
+      <ibiblio name="ru.ventra.ebr.public" m2compatible="true" root="https://ebr.ventra.ru/public/" />
+      <ibiblio name="ru.ventra.ebr.external" m2compatible="true" root="https://ebr.ventra.ru/external/" />
+    </chain>
+  </resolvers>
+</ivysettings>

@@ -1,0 +1,19 @@
+<project name="b3-hudson" default="resolve.tools" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
+  <tstamp>
+    <format property="timestamp" pattern="yyyyMMddHHmmss" timezone="GMT"/>
+  </tstamp>
+
+  <property file="build.properties" />
+
+  <import file="ivy/ivy-init.xml" />
+
+  <target name="resolve.init" depends="init, ivy.init">
+    <ivy:settings file="${ivy.settings.file}" />
+  </target>
+
+  <target name="resolve.tools" depends="resolve.init">
+    <ivy:cachepath resolveId="tools.classpath" pathid="tools.classpath" conf="tools" type="jar" log="download-only" />
+    <ivy:resolve conf="tools" />
+    <ivy:retrieve pattern="${lib.dir}/[artifact](-[classifier])-[revision].[ext]" pathid="tools.classpath" conf="tools" />
+  </target>
+</project>

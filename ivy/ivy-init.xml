@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="ivy-init" xmlns:ivy="antlib:org.apache.ivy.ant">
+
+  <!-- Properties -->
+  <property name="m2.ivy.url" value="http://repo1.maven.org/maven2/org/apache/ivy/ivy" />
+  <dirname property="build.dir" file="${ant.file.ivy-init}/.." />
+  <property name="lib.dir" location="${build.dir}/lib" />
+  <property file="${build.dir}/ivy/ivy-init.properties" />
+
+  <!-- Main targets -->
+  <target name="clean-lib" description="Removes the target directory.">
+    <echo message="Lib: ${lib.dir}" />
+    <delete dir="${lib.dir}" quiet="false" failonerror="true" />
+  </target>
+
+  <target name="clean-ivy" description="Removes the ivy cache directory.">
+    <fail message="The 'ivy.cache.dir' property must be set on this project.">
+      <condition>
+        <not>
+          <isset property="ivy.cache.dir" />
+        </not>
+      </condition>
+    </fail>
+    <echo message="Ivy Cache: ${ivy.cache.dir}" />
+    <delete quiet="false" failonerror="true" dir="${ivy.cache.dir}" />
+  </target>
+
+  <target name="init">
+    <mkdir dir="${target.dir}" />
+    <mkdir dir="${lib.dir}" />
+  </target>
+
+  <!-- ivy -->
+  <condition property="ivy.initialized">
+    <available resource="org/apache/ivy/ant/antlib.xml" />
+  </condition>
+  <condition property="ivy.downloaded">
+    <or>
+      <isset property="ivy.initialized" />
+      <available file="${ivy.lib.dir}/ivy-${ivy.version}.jar" />
+    </or>
+  </condition>
+
+  <target name="ivy.version">
+    <get src="${m2.ivy.url}/maven-metadata.xml" dest="${ivy.lib.dir}/ivy-metadata.xml" />
+    <xmlproperty file="${ivy.lib.dir}/ivy-metadata.xml" />
+    <property name="ivy.version" value="${metadata.versioning.release}"/>
+    <echo message="Latest Ivy Release: ${ivy.version}" />
+  </target>
+
+  <target name="ivy.download" depends="ivy.version" unless="ivy.downloaded">
+    <mkdir dir="${ivy.lib.dir}" />
+    <get src="${m2.ivy.url}/${ivy.version}/ivy-${ivy.version}.jar" dest="${ivy.lib.dir}/ivy-${ivy.version}.jar" />
+  </target>
+
+  <target name="ivy.init" depends="ivy.download" unless="ivy.initialized">
+    <path id="ivy.lib.path">
+      <fileset dir="${ivy.lib.dir}" includes="*.jar" />
+    </path>
+    <taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant" classpathref="ivy.lib.path" />
+  </target>
+</project>
