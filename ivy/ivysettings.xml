@@ -1,13 +1,15 @@
 <ivysettings>
-  <settings defaultResolver="ventra-chain" />
+  <settings defaultResolver="osgi-all" defaultLatestStrategy="latest-osgi" />
 
   <include file="${user.home}/.ivy2/ivysettings.xml" />
 
   <resolvers>
-    <chain name="ventra-chain">
-      <ibiblio name="ru.ventra.ebr.release" m2compatible="true" root="https://ebr.ventra.ru/release/" />
-      <ibiblio name="ru.ventra.ebr.public" m2compatible="true" root="https://ebr.ventra.ru/public/" />
-      <ibiblio name="ru.ventra.ebr.external" m2compatible="true" root="https://ebr.ventra.ru/external/" />
-    </chain>
+    <updatesite name="orbit-updatesite" url="http://download.eclipse.org/tools/orbit/downloads/drops/${orbit.revision}/repository" />
+    <updatesite name="e-4.4-updatesite" url="http://download.eclipse.org/eclipse/updates/4.4" />
+
+    <osgi-agg name="osgi-all">
+      <resolver ref="orbit-updatesite" />
+      <resolver ref="e-4.4-updatesite" />
+    </osgi-agg>
   </resolvers>
 </ivysettings>

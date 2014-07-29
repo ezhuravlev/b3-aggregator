@@ -1,6 +1,7 @@
 lib/
 target/
 build/
+.ivy-cache/
 .project
 .settings
 .classpath

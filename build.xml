@@ -1,4 +1,4 @@
-<project name="b3-hudson" default="resolve.tools" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
+<project name="b3-hudson" default="resolve.p2" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
   <tstamp>
     <format property="timestamp" pattern="yyyyMMddHHmmss" timezone="GMT"/>
   </tstamp>
@@ -6,6 +6,12 @@
   <property file="build.properties" />
 
   <import file="ivy/ivy-init.xml" />
+
+
+  <target name="init">
+    <mkdir dir="${target.dir}" />
+    <mkdir dir="${lib.dir}" />
+  </target>
 
   <target name="resolve.init" depends="init, ivy.init">
     <ivy:settings file="${ivy.settings.file}" />
@@ -15,5 +21,11 @@
     <ivy:cachepath resolveId="tools.classpath" pathid="tools.classpath" conf="tools" type="jar" log="download-only" />
     <ivy:resolve conf="tools" />
     <ivy:retrieve pattern="${lib.dir}/[artifact](-[classifier])-[revision].[ext]" pathid="tools.classpath" conf="tools" />
+  </target>
+
+  <target name="resolve.p2" depends="resolve.init">
+    <ivy:cachepath conf="p2-runtime" pathid="p2.classpath" />
+    <ivy:resolve conf="p2-runtime" />
+    <ivy:retrieve conf="p2-runtime" pathid="p2.classpath" pattern="${lib.dir}/[artifact](-[classifier])-[revision].[ext]"  />
   </target>
 </project>

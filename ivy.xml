@@ -1,4 +1,7 @@
-<ivy-module version="2.0" xmlns:m="http://ant.apache.org/ivy/maven">
+<?xml version="1.0" encoding="UTF-8"?>
+<ivy-module version="2.0"
+            xmlns:m="http://ant.apache.org/ivy/maven">
+
   <info organisation="ru.ventra" module="b3-hudson" />
   <configurations>
     <conf name="tools" description="3rd party ANT tasks" />
@@ -8,7 +11,16 @@
     <!-- Tools -->
     <dependency org="ant-contrib" name="ant-contrib" rev="1.0b3" conf="tools->default" />
     <dependency org="com.oopsconsultancy" name="xmltask" rev="1.16.1" conf="tools->default" />
-    <dependency org="org.apache.maven" name="maven-ant-tasks" rev="2.1.3" conf="tools->default" />
+    <!-- P2 Runtime -->
+    <dependency org="bundle" name="javax.xml" rev="[1.3.4,2)" conf="p2-runtime->default" />
+    <dependency org="bundle" name="org.eclipse.equinox.p2.director" rev="[1,)" conf="p2-runtime->default">
+      <!-- Excluding environment-specific dependencies -->
+      <exclude org="package" module="javax.crypto" />
+      <exclude org="package" module="javax.crypto.spec" />
+      <exclude org="package" module="javax.security.auth" />
+      <exclude org="package" module="javax.security.auth.callback" />
+      <exclude org="package" module="javax.security.auth.login" />
+      <exclude org="package" module="javax.security.auth.spi" />
+    </dependency>
   </dependencies>
-  
 </ivy-module>
